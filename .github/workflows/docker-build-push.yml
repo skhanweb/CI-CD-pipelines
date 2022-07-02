@@ -19,8 +19,8 @@ env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: docker.io
   # github.repository as <account>/<repo>
-  IMAGE_NAME: ${{ "spring-boot-app-demo" }}
-  REPOSITORY_NAME: ${{ "muhammadsaudkhan" }}
+  IMAGE_NAME: "spring-boot-app-demo"
+  REPOSITORY_NAME: "muhammadsaudkhan"
     
 jobs:
   build:
@@ -43,9 +43,9 @@ jobs:
       - name: Build & push Docker image
         uses: mr-smithers-excellent/docker-build-push@v5
         with:
-          image: REPOSITORY_NAME/IMAGE_NAME
+          image: {{ env.REPOSITORY_NAME }}/{{ env.IMAGE_NAME }}
           tags: v1, latest
-          registry: REGISTRY
+          registry: {{ env.REGISTRY }}
           dockerfile: Dockerfile
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
