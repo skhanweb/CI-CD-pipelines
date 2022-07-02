@@ -46,7 +46,7 @@ jobs:
           image: ${{ env.REPOSITORY_NAME }}/${{ env.IMAGE_NAME }}
           tags: v1, latest
           registry: ${{ env.REGISTRY }}
-          dockerfile: Dockerfile
+          dockerfile: spring-boot-docker-demo/Dockerfile
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
