@@ -17,13 +17,17 @@ env:
   # github.repository as <account>/<repo>
   IMAGE_NAME: "spring-boot-app-demo"
   REPOSITORY_NAME: "muhammadsaudkhan"
-  IMAGE_TAG: "v1.PI4.S4" 
+  IMAGE_TAG: "v1.PI4.S4"
+  
     
 jobs:
   build:
 
     runs-on: ubuntu-latest
     environment: production
+    defaults:
+      run:
+        working-directory: spring-boot-docker-demo
 
     steps:
       - name: Checkout repository
