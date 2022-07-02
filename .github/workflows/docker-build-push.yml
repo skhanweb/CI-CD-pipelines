@@ -40,15 +40,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         
-      - name: Build & push Docker image
-        uses: mr-smithers-excellent/docker-build-push@v5
-        with:
-          image: ${{ env.REPOSITORY_NAME }}/${{ env.IMAGE_NAME }}
-          tags: v1, latest
-          registry: ${{ env.REGISTRY }}
-          dockerfile: spring-boot-docker-demo/Dockerfile
-          username: ${{ secrets.DOCKER_USER }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+      #- name: Build & push Docker image
+      #  uses: mr-smithers-excellent/docker-build-push@v5
+      #  with:
+      #    image: ${{ env.REPOSITORY_NAME }}/${{ env.IMAGE_NAME }}
+      #    tags: v1, latest
+      #    registry: ${{ env.REGISTRY }}
+      #    dockerfile: spring-boot-docker-demo/Dockerfile
+      #    username: ${{ secrets.DOCKER_USER }}
+      #    password: ${{ secrets.DOCKER_PASSWORD }}
 
       # Install the cosign tool except on PR
       # https://github.com/sigstore/cosign-installer
@@ -65,13 +65,13 @@ jobs:
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
-     # - name: Log into registry ${{ env.REGISTRY }}
+      - name: Log into registry ${{ env.REGISTRY }}
      #   if: github.event_name != 'pull_request'
-     #   uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
-      #  with:
-      #    registry: ${{ env.REGISTRY }}
-      #    username: ${{ secrets.DOCKER_USER }}
-      #    password: ${{ secrets.DOCKER_PASSWORD }}
+        uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
@@ -83,14 +83,16 @@ jobs:
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
-      #- name: Build and push Docker image
-      #  id: build-and-push
-      #  uses: docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a
-      #  with:
-      #    context: .
-      #    push: ${{ github.event_name != 'pull_request' }}
-      #    tags: ${{ steps.meta.outputs.tags }}
-      #    labels: ${{ steps.meta.outputs.labels }}
+      - name: Build and push Docker image
+        id: build-and-push
+        uses: docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a
+        with:
+          context: spring-boot-docker-demo/Dockerfile
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: latest
+          labels: labels
+          #tags: ${{ steps.meta.outputs.tags }}
+          #labels: ${{ steps.meta.outputs.labels }}
 
       # Sign the resulting Docker image digest except on PRs.
       # This will only write to the public Rekor transparency log when the Docker
